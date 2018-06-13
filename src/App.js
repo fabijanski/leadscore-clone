@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import LoginPage from './pages/LoginPage/LoginPage';
+
 
 const styles = {
   root: {
-    width: '100wh',
+    width: '100vw',
     height: '100vh',
     display: 'flex'
   }
@@ -18,9 +20,10 @@ class App extends Component {
 
   render() {
     const { classes } = this.props;
+
     return (
       <div className={classes.root}>
-        Hello from the App!
+        <LoginPage />
       </div>
     );
   }
