@@ -1,0 +1,12 @@
+{
+  "extends": ["react-app", "airbnb"],
+  "parser": "babel-eslint",
+  "rules": {
+    "linebreak-style": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "max-len": [1, 120, 2, { "ignoreComments": true }],
+    "comma-dangle": ["error", {
+        "functions": "ignore"
+    }]
+  }
+}
