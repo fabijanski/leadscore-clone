@@ -8,7 +8,8 @@ import {
   loginSuccess,
   fetchContacts,
   fetchContactsError,
-  fetchContactsSuccess
+  fetchContactsSuccess,
+  logout
 } from './actions';
 
 
@@ -43,4 +44,9 @@ export const contactsRequest = () => (dispatch, getState) => {
       );
   }
   return store.dispatch(push('/'));
+};
+
+export const logoutRequest = () => (dispatch) => {
+  dispatch(logout());
+  store.dispatch(push('/'));
 };

@@ -4,7 +4,8 @@ import {
   LOGIN_SUCCESS,
   FETCH_CONTACTS_PENDING,
   FETCH_CONTACTS_ERROR,
-  FETCH_CONTACTS_SUCCESS
+  FETCH_CONTACTS_SUCCESS,
+  LOGOUT
 } from './actions';
 
 
@@ -67,6 +68,16 @@ export default function rootReducer(state, action) {
           pending: true,
           data: [],
           error: action.error.message
+        }
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        session: {
+          pending: true,
+          authToken: null,
+          user: null,
+          error: ''
         }
       };
     default:

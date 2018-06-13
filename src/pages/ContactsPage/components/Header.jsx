@@ -7,8 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 const styles = {
-  root: {
-  },
   title: {
     flex: 1
   }
@@ -17,30 +15,30 @@ const styles = {
 // eslint-disable-next-line react/prefer-stateless-function
 class Header extends Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.any).isRequired
+    classes: PropTypes.objectOf(PropTypes.any).isRequired,
+    handleLogout: PropTypes.func.isRequired
   };
 
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography
-              variant="title"
-              color="inherit"
-              className={classes.title}
-            >
-              LeadScore
-            </Typography>
-            <Button
-              color="inherit"
-            >
-              Logout
-            </Button>
-          </Toolbar>
-        </AppBar>
-      </div>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography
+            variant="title"
+            color="inherit"
+            className={classes.title}
+          >
+            LeadScore
+          </Typography>
+          <Button
+            color="inherit"
+            onClick={this.props.handleLogout}
+          >
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
     );
   }
 }
