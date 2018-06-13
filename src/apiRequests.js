@@ -1,11 +1,16 @@
 import axios from 'axios';
 import { push } from 'connected-react-router';
 import store from './store';
+import { getAuthToken } from './selectors';
 import {
   login,
   loginError,
-  loginSuccess
+  loginSuccess,
+  fetchContacts,
+  fetchContactsError,
+  fetchContactsSuccess
 } from './actions';
+
 
 const basicUrl = 'https://internal-api-staging-lb.interact.io/v2';
 
@@ -14,7 +19,6 @@ const ENDPOINTS = {
   contacts: `${basicUrl}/contacts`
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const loginRequest = (username, password) => (dispatch) => {
   dispatch(login());
 
@@ -26,4 +30,17 @@ export const loginRequest = (username, password) => (dispatch) => {
       },
       error => dispatch(loginError(error))
     );
+};
+
+export const contactsRequest = () => (dispatch, getState) => {
+  const headers = { authToken: getAuthToken(getState()) };
+  if (headers.authToken) {
+    dispatch(fetchContacts());
+    return axios.get(ENDPOINTS.contacts, { headers })
+      .then(
+        response => dispatch(fetchContactsSuccess(response)),
+        error => dispatch(fetchContactsError(error))
+      );
+  }
+  return store.dispatch(push('/'));
 };

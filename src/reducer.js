@@ -1,7 +1,10 @@
 import {
   LOGIN_PENDING,
   LOGIN_ERROR,
-  LOGIN_SUCCESS
+  LOGIN_SUCCESS,
+  FETCH_CONTACTS_PENDING,
+  FETCH_CONTACTS_ERROR,
+  FETCH_CONTACTS_SUCCESS
 } from './actions';
 
 
@@ -19,7 +22,6 @@ export default function rootReducer(state, action) {
       };
     // eslint-disable-next-line no-case-declarations
     case LOGIN_SUCCESS:
-      console.log('loginSuccess', action.response.data);
       const { data } = action.response;
       return {
         ...state,
@@ -38,6 +40,33 @@ export default function rootReducer(state, action) {
           authToken: null,
           user: null,
           error: 'Bad Credentials'
+        }
+      };
+    case FETCH_CONTACTS_PENDING:
+      return {
+        ...state,
+        contacts: {
+          pending: true,
+          data: [],
+          error: null
+        }
+      };
+    case FETCH_CONTACTS_SUCCESS:
+      return {
+        ...state,
+        contacts: {
+          pending: false,
+          data: action.response.data.data,
+          error: null
+        }
+      };
+    case FETCH_CONTACTS_ERROR:
+      return {
+        ...state,
+        contacts: {
+          pending: true,
+          data: [],
+          error: action.error.message
         }
       };
     default:
