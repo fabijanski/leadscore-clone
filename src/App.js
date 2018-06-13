@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import LoginPage from './pages/LoginPage/LoginPage';
+// import LoginPage from './pages/LoginPage/LoginPage';
+import ContactsPage from './pages/ContactsPage/ContactsPage';
 
 
 const styles = {
@@ -23,7 +24,7 @@ class App extends Component {
 
     return (
       <div className={classes.root}>
-        <LoginPage />
+        <ContactsPage />
       </div>
     );
   }
