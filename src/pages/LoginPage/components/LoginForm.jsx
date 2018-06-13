@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import FormControl from '@material-ui/core/FormControl';
@@ -12,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
+import { loginRequest } from '../../../apiRequests';
 
 const styles = theme => ({
   root: {
@@ -39,16 +41,34 @@ const styles = theme => ({
 class LoginForm extends Component {
   static propTypes = {
     classes: PropTypes.objectOf(PropTypes.any).isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    errors: PropTypes.objectOf(PropTypes.object).isRequired,
-    user: PropTypes.objectOf(PropTypes.string).isRequired
+    onLogin: PropTypes.func.isRequired,
+    error: PropTypes.string
+  };
+
+  static defaultProps = {
+    error: ''
   };
 
   state = {
-    emailError: false,
-    passwordError: false,
+    user: {
+      email: '',
+      password: ''
+    },
     showPassword: false
+  };
+
+  handleInputChange = (event) => {
+    const field = event.target.name;
+    const { user } = this.state;
+    user[field] = event.target.value;
+
+    this.setState({ user });
+  };
+
+  handleFormSubmit = (event) => {
+    const { email, password } = this.state.user;
+    event.preventDefault();
+    this.props.onLogin(email, password);
   };
 
   handleMouseDownPassword = (event) => {
@@ -61,18 +81,14 @@ class LoginForm extends Component {
 
 
   render() {
-    const {
-      classes, onChange, onSubmit, errors
-    } = this.props;
-
-    const { emailError, passwordError } = this.state;
+    const { classes } = this.props;
 
     return (
       <Card className={classes.root}>
-        <form className={classes.form} action="/" onSubmit={onSubmit}>
+        <form className={classes.form} action="/" onSubmit={this.handleFormSubmit}>
           <FormControl
             className={classes.formControl}
-            error={emailError}
+            error={!!this.props.error}
             aria-describedby="email-error-text"
             required
           >
@@ -85,17 +101,17 @@ class LoginForm extends Component {
               id="email-error"
               name="email"
               type="email"
-              onChange={onChange}
-              value={this.props.user.email}
+              onChange={this.handleInputChange}
+              value={this.state.user.email}
             />
             {
-              emailError && <FormHelperText id="email-error-text">{errors.email}</FormHelperText>
+              !!this.props.error && <FormHelperText id="email-error-text">{this.props.error}</FormHelperText>
             }
           </FormControl>
 
           <FormControl
             className={classes.formControl}
-            error={passwordError}
+            error={!!this.props.error}
             aria-describedby="password-error-text"
             required
           >
@@ -108,8 +124,8 @@ class LoginForm extends Component {
               id="password-error"
               name="password"
               type={this.state.showPassword ? 'text' : 'password'}
-              onChange={onChange}
-              value={this.props.user.password}
+              onChange={this.handleInputChange}
+              value={this.state.user.password}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -123,7 +139,7 @@ class LoginForm extends Component {
               }
             />
             {
-              passwordError && <FormHelperText id="password-error-text">{errors.password}</FormHelperText>
+              !!this.props.error && <FormHelperText id="password-error-text">{this.props.error}</FormHelperText>
             }
           </FormControl>
 
@@ -142,4 +158,12 @@ class LoginForm extends Component {
   }
 }
 
-export default withStyles(styles)(LoginForm);
+const mapStateToProps = state => ({ error: state.session.error });
+
+const mapDispatchToProps = dispatch => ({
+  onLogin: (username, password) => dispatch(loginRequest(username, password))
+});
+
+const LoginFormContainer = connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+
+export default withStyles(styles)(LoginFormContainer);

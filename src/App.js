@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-// import LoginPage from './pages/LoginPage/LoginPage';
+import { Route, Switch } from 'react-router';
+import { ConnectedRouter } from 'connected-react-router';
+import { history } from './store';
+import LoginPage from './pages/LoginPage/LoginPage';
 import ContactsPage from './pages/ContactsPage/ContactsPage';
 
 
@@ -24,7 +27,12 @@ class App extends Component {
 
     return (
       <div className={classes.root}>
-        <ContactsPage />
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route exact path="/contacts" component={() => <ContactsPage />} />
+            <Route render={() => <LoginPage />} />
+          </Switch>
+        </ConnectedRouter>
       </div>
     );
   }
