@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Header from './components/Header';
 import ContactsList from './components/ContactsList';
 
-import { contactsRequest } from '../../apiRequests';
+import { contactsRequest, logoutRequest } from '../../apiRequests';
 import { getContacts } from '../../selectors';
 
 const styles = theme => ({
@@ -24,6 +24,7 @@ class ContactsPage extends Component {
   static propTypes = {
     classes: PropTypes.objectOf(PropTypes.any).isRequired,
     fetchContacts: PropTypes.func.isRequired,
+    onLogout: PropTypes.func.isRequired,
     contacts: PropTypes.objectOf(PropTypes.any).isRequired
   };
 
@@ -36,7 +37,9 @@ class ContactsPage extends Component {
 
     return (
       <div className={classes.root}>
-        <Header />
+        <Header
+          handleLogout={this.props.onLogout}
+        />
         {
           this.props.contacts.pending &&
             <h2 className={classes.pendingInfo}>Loading results...</h2>
@@ -55,7 +58,8 @@ class ContactsPage extends Component {
 const mapStateToProps = state => ({ contacts: getContacts(state) });
 
 const mapDispatchToProps = dispatch => ({
-  fetchContacts: () => dispatch(contactsRequest())
+  fetchContacts: () => dispatch(contactsRequest()),
+  onLogout: () => dispatch(logoutRequest())
 });
 
 const ContactsPageContainer = connect(mapStateToProps, mapDispatchToProps)(ContactsPage);
