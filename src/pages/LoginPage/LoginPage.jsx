@@ -29,31 +29,6 @@ class LoginPage extends Component {
     classes: PropTypes.objectOf(PropTypes.any).isRequired
   };
 
-  state = {
-    errors: {},
-    user: {
-      email: '',
-      password: ''
-    }
-  };
-
-  changeUser = (event) => {
-    const field = event.target.name;
-    const { user } = this.state;
-    user[field] = event.target.value;
-
-    this.setState({ user });
-    console.log(field, event.target.value, this.state);
-  };
-
-  handleFormSubmit = (event) => {
-    event.preventDefault();
-
-    console.log('email:', this.state.user.email);
-    console.log('password:', this.state.user.password);
-  };
-
-
   render() {
     const { classes } = this.props;
 
@@ -62,12 +37,7 @@ class LoginPage extends Component {
         <h1 className={classes.title}>
           Lead<span>score</span>
         </h1>
-        <LoginForm
-          onSubmit={this.handleFormSubmit}
-          onChange={this.changeUser}
-          errors={this.state.errors}
-          user={this.state.user}
-        />
+        <LoginForm />
       </div>
     );
   }
