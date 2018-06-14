@@ -28,6 +28,11 @@ class ContactsList extends Component {
     contacts: []
   };
 
+  printArrayData = (array, key) =>
+    array
+      .map(item => item[key])
+      .join(', ');
+
   render() {
     const { classes, contacts } = this.props;
 
@@ -44,9 +49,18 @@ class ContactsList extends Component {
           <TableBody>
             {contacts.map(contact => (
               <TableRow key={contact.id}>
-                <TableCell component="th" scope="row">{contact.displayName}</TableCell>
-                <TableCell>{contact.phoneNumbers[0].number}</TableCell>
-                <TableCell>{contact.emails[0].email}</TableCell>
+                <TableCell
+                  component="th"
+                  scope="row"
+                >
+                  {contact.displayName ? contact.displayName : ''}
+                </TableCell>
+                <TableCell>
+                  {contact.phoneNumbers ? this.printArrayData(contact.phoneNumbers, 'number') : ''}
+                </TableCell>
+                <TableCell>
+                  {contact.emails ? this.printArrayData(contact.emails, 'email') : ''}
+                </TableCell>
               </TableRow>
               ))}
           </TableBody>
